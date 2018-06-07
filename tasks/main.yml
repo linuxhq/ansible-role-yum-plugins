@@ -73,4 +73,5 @@
     - item.action_key is defined
     - item.transaction_state is defined
     - item.command is defined
+    - yum_plugin_post_transaction_actions.actions is defined
 ...
