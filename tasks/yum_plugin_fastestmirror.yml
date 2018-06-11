@@ -7,7 +7,7 @@
 
 - name: Attempting to overlay fastestmirror configuration
   template:
-    src: yum-fastestmirror.conf.j2
+    src: yum-plugin-fastestmirror.conf.j2
     dest: /etc/yum/pluginconf.d/fastestmirror.conf
     owner: root
     group: root

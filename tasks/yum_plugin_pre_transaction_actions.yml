@@ -7,7 +7,7 @@
 
 - name: Attempting to overlay pre-transaction-actions configuration
   template:
-    src: yum-pre-transaction-actions.conf.j2
+    src: yum-plugin-pre-transaction-actions.conf.j2
     dest: /etc/yum/pluginconf.d/pre-transaction-actions.conf
     owner: root
     group: root

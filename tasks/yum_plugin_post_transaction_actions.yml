@@ -7,7 +7,7 @@
 
 - name: Attempting to overlay post-transaction-actions configuration
   template:
-    src: yum-post-transaction-actions.conf.j2
+    src: yum-plugin-post-transaction-actions.conf.j2
     dest: /etc/yum/pluginconf.d/post-transaction-actions.conf
     owner: root
     group: root
