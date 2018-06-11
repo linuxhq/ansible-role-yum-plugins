@@ -15,8 +15,6 @@
   when: yum_plugin_post_transaction_actions_yum is success
 
 - name: Attempting to overlay post-transaction-actions action dir
-  tags: yum-plugins
-  become: true
   file:
     path: "{{ yum_plugin_post_transaction_actions.actiondir }}"
     owner: root
@@ -28,8 +26,6 @@
     - yum_plugin_post_transaction_actions.actiondir is defined
 
 - name: Attempting to overlay post-transaction-actions actions, if applicable
-  tags: yum-plugins
-  become: true
   lineinfile:
     attributes: "{{ item.attributes|default(omit) }}"
     backrefs: "{{ item.backrefs|default('no') }}"
