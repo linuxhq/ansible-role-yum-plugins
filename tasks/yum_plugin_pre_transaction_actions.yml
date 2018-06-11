@@ -1,0 +1,57 @@
+---
+- name: Ensure that the pre-transaction-actions plugin is installed
+  yum:
+    name: yum-plugin-pre-transaction-actions
+    state: present
+  register: yum_plugin_pre_transaction_actions_yum
+
+- name: Attempting to overlay pre-transaction-actions configuration
+  template:
+    src: yum-pre-transaction-actions.conf.j2
+    dest: /etc/yum/pluginconf.d/pre-transaction-actions.conf
+    owner: root
+    group: root
+    mode: 0644
+  when: yum_plugin_pre_transaction_actions_yum is success
+
+- name: Attempting to overlay pre-transaction-actions action dir
+  tags: yum-plugins
+  become: true
+  file:
+    path: "{{ yum_plugin_pre_transaction_actions.actiondir }}"
+    owner: root
+    group: root
+    mode: 0755
+    state: directory
+  when:
+    - yum_plugin_pre_transaction_actions_yum is success
+    - yum_plugin_pre_transaction_actions.actiondir is defined
+
+- name: Attempting to overlay pre-transaction-actions actions, if applicable
+  tags: yum-plugins
+  become: true
+  lineinfile:
+    attributes: "{{ item.attributes|default(omit) }}"
+    backrefs: "{{ item.backrefs|default('no') }}"
+    backup: "{{ item.backup|default('no') }}"
+    create: "{{ item.create|default('yes') }}"
+    group: "{{ item.group|default('root') }}"
+    insertafter: "{{ item.insertafter|default(omit) }}"
+    insertbefore: "{{ item.insertbefore|default(omit) }}"
+    line: "{{ item.action_key }}:{{ item.transaction_state }}:{{ item.command }}"
+    mode: "{{ item.mode|default(0600) }}"
+    others: "{{ item.others|default(omit) }}"
+    owner: "{{ item.owner|default('root') }}"
+    path: "{{ yum_plugin_pre_transaction_actions.actiondir }}/{{ item.action_key }}.action"
+    regexp: "^{{ item.action_key }}"
+    state: "{{ item.state|default('present') }}"
+    unsafe_writes: "{{ item.unsafe_writes|default(omit) }}"
+    validate: "{{ item.validate|default(omit) }}"
+  with_items: "{{ yum_plugin_pre_transaction_actions.actions }}"
+  when:
+    - item.action_key is defined
+    - item.transaction_state is defined
+    - item.command is defined
+    - yum_plugin_pre_transaction_actions_yum is success
+    - yum_plugin_pre_transaction_actions.actions is defined
+...

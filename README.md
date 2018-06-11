@@ -14,9 +14,9 @@ None
 
 Available variables are listed below, along with default values:
 
-    yum_plugins: []
     yum_plugin_fastestmirror: {}
     yum_plugin_post_transaction_actions: {}
+    yum_plugin_pre_transaction_actions: {}
 
 ## Dependencies
 
@@ -27,9 +27,6 @@ None
     - hosts: servers
       roles:
         - role: linuxhq.yum-plugins
-          yum_plugins:
-            - yum-plugin-fastestmirror
-            - yum-plugin-post-transaction-actions
           yum_plugin_fastestmirror:
             always_print_best_host: true
             enabled: 1
@@ -44,6 +41,13 @@ None
               - action_key: kernel
                 transaction_state: install
                 command: /usr/sbin/grub2-set-default 0 && /usr/bin/systemctl reboot
+            enabled: 1
+          yum_plugin_pre_transaction_actions:
+            actiondir: /etc/yum/pre-actions/
+            actions:
+              - action_key: httpd
+                transaction_state: update
+                command: /usr/bin/systemctl stop httpd.service
             enabled: 1
 
 ## License

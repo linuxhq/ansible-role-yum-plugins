@@ -1,0 +1,16 @@
+---
+- name: Ensure that the fastestmirror plugin is installed
+  yum:
+    name: yum-plugin-fastestmirror
+    state: present
+  register: yum_plugin_fastestmirror_yum
+
+- name: Attempting to overlay fastestmirror configuration
+  template:
+    src: yum-fastestmirror.conf.j2
+    dest: /etc/yum/pluginconf.d/fastestmirror.conf
+    owner: root
+    group: root
+    mode: 0644
+  when: yum_plugin_fastestmirror_yum is success
+...

@@ -1,77 +1,25 @@
 ---
-- name: Ensure that the required yum plugins are installed
+- name: Attempting to import fastestmirror plugin tasks
   tags: yum-plugins
   become: true
-  yum:
-    name: "{{ item }}"
-    state: present
-  register: yum_plugins_yum
-  with_items: "{{ yum_plugins }}"
-  when: yum_plugins|length > 0
-
-- name: Attempting to overlay fastestmirror configuration, if applicable
-  tags: yum-plugins
-  become: true
-  template:
-    src: yum-fastestmirror.conf.j2
-    dest: /etc/yum/pluginconf.d/fastestmirror.conf
-    owner: root
-    group: root
-    mode: 0644
+  import_tasks: yum_plugin_fastestmirror.yml
   when:
-    - yum_plugin_fastestmirror|length > 0
-    - yum_plugins_yum is success
+    - yum_plugin_fastestmirror.enabled is defined
+    - yum_plugin_fastestmirror.enabled|bool
 
-- name: Attempting to overlay post-transaction-actions configuration, if applicable
+- name: Attempting to import pre-transaction-actions plugin tasks
   tags: yum-plugins
   become: true
-  template:
-    src: yum-post-transaction-actions.conf.j2
-    dest: /etc/yum/pluginconf.d/post-transaction-actions.conf
-    owner: root
-    group: root
-    mode: 0644
+  import_tasks: yum_plugin_pre_transaction_actions.yml
   when:
-    - yum_plugin_post_transaction_actions|length > 0
-    - yum_plugins_yum is success
+    - yum_plugin_pre_transaction_actions.enabled is defined
+    - yum_plugin_pre_transaction_actions.enabled|bool
 
-- name: Attempting to overlay post-transaction-actions action dir, if applicable
+- name: Attempting to import post-transaction-actions plugin tasks
   tags: yum-plugins
   become: true
-  file:
-    path: "{{ yum_plugin_post_transaction_actions.actiondir }}"
-    owner: root
-    group: root
-    mode: 0755
-    state: directory
+  import_tasks: yum_plugin_post_transaction_actions.yml
   when:
-    - yum_plugin_post_transaction_actions|length > 0
-    - yum_plugin_post_transaction_actions.actiondir is defined
-
-- name: Attempting to overlay post-transaction-actions actions, if applicable
-  tags: yum-plugins
-  become: true
-  lineinfile:
-    attributes: "{{ item.attributes|default(omit) }}"
-    backrefs: "{{ item.backrefs|default('no') }}"
-    backup: "{{ item.backup|default('no') }}"
-    create: "{{ item.create|default('yes') }}"
-    group: "{{ item.group|default('root') }}"
-    insertafter: "{{ item.insertafter|default(omit) }}"
-    insertbefore: "{{ item.insertbefore|default(omit) }}"
-    line: "{{ item.action_key }}:{{ item.transaction_state }}:{{ item.command }}"
-    mode: "{{ item.mode|default(0600) }}"
-    others: "{{ item.others|default(omit) }}"
-    owner: "{{ item.owner|default('root') }}"
-    path: "{{ yum_plugin_post_transaction_actions.actiondir }}/{{ item.action_key }}.action"
-    regexp: "^{{ item.action_key }}"
-    state: "{{ item.state|default('present') }}"
-    unsafe_writes: "{{ item.unsafe_writes|default(omit) }}"
-    validate: "{{ item.validate|default(omit) }}"
-  with_items: "{{ yum_plugin_post_transaction_actions.actions }}"
-  when:
-    - item.action_key is defined
-    - item.transaction_state is defined
-    - item.command is defined
-    - yum_plugin_post_transaction_actions.actions is defined
+    - yum_plugin_post_transaction_actions.enabled is defined
+    - yum_plugin_post_transaction_actions.enabled|bool
 ...

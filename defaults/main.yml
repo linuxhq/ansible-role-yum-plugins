@@ -1,5 +1,5 @@
 ---
-yum_plugins: []
 yum_plugin_fastestmirror: {}
 yum_plugin_post_transaction_actions: {}
+yum_plugin_pre_transaction_actions: {}
 ...
