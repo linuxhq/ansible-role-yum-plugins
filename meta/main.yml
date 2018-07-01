@@ -1,6 +1,7 @@
 ---
 dependencies: []
 galaxy_info:
+  role_name: yum_plugins
   author: tkimball83
   description: RHEL/CentOS - Plug-ins that extend and enhance yums operations
   license: GPLv3
@@ -11,5 +12,5 @@ galaxy_info:
         - 6
         - 7
   galaxy_tags:
-    - yum-plugins
+    - yum
 ...

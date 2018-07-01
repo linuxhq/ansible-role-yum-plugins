@@ -1,6 +1,6 @@
 ---
 - name: Attempting to import fastestmirror plugin tasks
-  tags: yum-plugins
+  tags: yum_plugins
   become: true
   import_tasks: yum_plugin_fastestmirror.yml
   when:
@@ -8,7 +8,7 @@
     - yum_plugin_fastestmirror.enabled|bool
 
 - name: Attempting to import pre-transaction-actions plugin tasks
-  tags: yum-plugins
+  tags: yum_plugins
   become: true
   import_tasks: yum_plugin_pre_transaction_actions.yml
   when:
@@ -16,7 +16,7 @@
     - yum_plugin_pre_transaction_actions.enabled|bool
 
 - name: Attempting to import post-transaction-actions plugin tasks
-  tags: yum-plugins
+  tags: yum_plugins
   become: true
   import_tasks: yum_plugin_post_transaction_actions.yml
   when:

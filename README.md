@@ -1,7 +1,7 @@
-# ansible-role-yum-plugins
+# ansible-role-yum_plugins
 
-[![Build Status](https://travis-ci.org/linuxhq/ansible-role-yum-plugins.svg?branch=master)](https://travis-ci.org/linuxhq/ansible-role-yum-plugins)
-[![Ansible Galaxy](https://img.shields.io/badge/ansible--galaxy-yum--plugins-blue.svg?style=flat)](https://galaxy.ansible.com/linuxhq/yum-plugins)
+[![Build Status](https://travis-ci.org/linuxhq/ansible-role-yum_plugins.svg?branch=master)](https://travis-ci.org/linuxhq/ansible-role-yum_plugins)
+[![Ansible Galaxy](https://img.shields.io/badge/ansible--galaxy-yum_plugins-blue.svg?style=flat)](https://galaxy.ansible.com/linuxhq/yum_plugins)
 [![License](https://img.shields.io/badge/license-GPLv3-brightgreen.svg?style=flat)](COPYING)
 
 RHEL/CentOS - Plug-ins that extend and enhance yums operations
@@ -26,7 +26,7 @@ None
 
     - hosts: servers
       roles:
-        - role: linuxhq.yum-plugins
+        - role: linuxhq.yum_plugins
           yum_plugin_fastestmirror:
             always_print_best_host: true
             enabled: 1
