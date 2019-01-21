@@ -43,7 +43,9 @@
     state: "{{ item.state|default('present') }}"
     unsafe_writes: "{{ item.unsafe_writes|default(omit) }}"
     validate: "{{ item.validate|default(omit) }}"
-  with_items: "{{ yum_plugin_post_transaction_actions.actions }}"
+  loop: "{{ yum_plugin_post_transaction_actions.actions }}"
+  loop_control:
+    label: "{{ item.action_key }}"
   when:
     - item.action_key is defined
     - item.transaction_state is defined
