@@ -1,7 +1,7 @@
 # {{ ansible_managed }}
 
 [main]
-{% for key, value in yum_plugin_post_transaction_actions.iteritems()|sort %}
+{% for key, value in yum_plugin_post_transaction_actions.items()|sort %}
 {%   if key != 'actions' %}
 {%     if value is sameas true %}
 {{ key }} = true
